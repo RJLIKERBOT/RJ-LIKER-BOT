@@ -1,7 +1,9 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-TOKEN = "8306309242:AAEUOSxq33LRUzjdMozco18R_4ak10D502U"
+import os
+
+TOKEN = os.getenv("BOT_TOKEN") or "8306309242:AAEUOSxq33LRUzjdMozco18R_4ak10D502U"
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     keyboard = [
@@ -10,17 +12,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("📊 My Account", callback_data="account")],
         [InlineKeyboardButton("❓ Help", callback_data="help")]
     ]
-    reply_markup = InlineKeyboardMarkup(keyboard)
 
     await update.message.reply_text(
         "❤️ Welcome to RJ Liker\n\n"
         "Real Facebook Like Exchange System\n\n"
         "👇 Choose an option below",
-        reply_markup=reply_markup
+        reply_markup=InlineKeyboardMarkup(keyboard)
     )
 
-app = ApplicationBuilder().token(TOKEN).build()
-app.add_handler(CommandHandler("start", start))
+def main():
+    app = Application.builder().token(TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.run_polling()
 
 if __name__ == "__main__":
-    app.run_polling()
+    main()
