@@ -1,26 +1,17 @@
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, CommandHandler, ContextTypes
 import os
+from telegram import Update
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-TOKEN = os.getenv("BOT_TOKEN")
+BOT_TOKEN = os.getenv("BOT_TOKEN")
+
+if not BOT_TOKEN:
+    raise Exception("BOT_TOKEN not found")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    keyboard = [
-        [InlineKeyboardButton("🔐 Login with Facebook", callback_data="login")],
-        [InlineKeyboardButton("❤️ Like Exchange", callback_data="exchange")],
-        [InlineKeyboardButton("📊 My Account", callback_data="account")],
-        [InlineKeyboardButton("❓ Help", callback_data="help")]
-    ]
-
-    await update.message.reply_text(
-        "❤️ Welcome to RJ Liker\n\n"
-        "Real Facebook Like Exchange System\n\n"
-        "👇 Choose an option below",
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    await update.message.reply_text("RJ Liker bot is alive 🔥")
 
 def main():
-    app = Application.builder().token(TOKEN).build()
+    app = Application.builder().token(BOT_TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.run_polling()
 
